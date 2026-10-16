@@ -34,12 +34,13 @@ def display_users():
     with sqlite3.connect(DB_NAME) as conn:
         cursor = conn.cursor()
         cursor.execute('SELECT username, email FROM users')
-        for user in cursor.fetchall():
+        users = cursor.fetchall()
+        for user in users:
             print(f"Kullanıcı adı: {user[0]}, E-posta: {user[1]}")
-
+        return users
 
 def user_choice():
-    print("\n1.  Giriş yap")
+    print("\n1. Giriş yap")
     print("2. Kayıt ol")
     choice = input("Lütfen seçiminizi girin (1/2): ")
     return choice
@@ -60,7 +61,10 @@ def main():
         username = input("Yeni kullanıcı için kullanıcı adı girin: ")
         email = input("Yeni kullanıcı için e-posta adresi girin: ")
         password = input("Yeni kullanıcı için şifre girin: ")
-        add_user(username, email, password)
+        if add_user(username, email, password):
+            print("Kullanıcı başarıyla eklendi.")
+        else:
+            print("Bu kullanıcı adı zaten mevcut.")
     else:
         print("Geçersiz giriş. Lütfen giriş yapmak için 1, kayıt olmak için 2 girin.")
 
